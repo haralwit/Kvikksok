@@ -21,13 +21,17 @@
             // The event object (e) contains information like the
             // coordinates of the point on the map that was clicked.
             
-            console.log('A click event has occurred at ' + e.lngLat + e.lngLat.lng);
+            //console.log('A click event has occurred at ' + e.lngLat + e.lngLat.lng);
             
+            //marker
             var marker = new mapboxgl.Marker()
                     .setLngLat([e.lngLat.lng, e.lngLat.lat])
                     .addTo(map);
                     
-            //var popup = new mapboxgl.Popup().setHTML("<h1>Hello World!</h1>").addTo(map);
+            //pop-up 
+            new mapboxgl.Popup()
+            .setLngLat([e.lngLat.lng, e.lngLat.lat])
+            .setHTML("<h1>Hello World!</h1>").addTo(map);
         });
 
    </script>
