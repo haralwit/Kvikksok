@@ -3,7 +3,15 @@
 
  {% block content %}
 
-    <h1>Maps home!heeei</h1>
+    <h1>Sjekk ditt område:</h1>
+    <div>
+        <form method="get">
+            <input type="text" id="id_query" placeholder="postnummer">
+            <button type="button">Søk</button>
+        </form>
+    </div>
+
+
     <div id='map' style='width: 100; height: 800px;'></div>
     <script>
 
