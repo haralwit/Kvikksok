@@ -3,9 +3,19 @@
 
  {% block content %}
 
-    <h1>Maps home!heeei</h1>
+    <h1>Sjekk ditt område:</h1>
+    <div>
+        <form method="get">
+            <input type="text" id="id_query" placeholder="postnummer">
+            <button type="button">Søk</button>
+        </form>
+    </div>
+
+
     <div id='map' style='width: 100; height: 800px;'></div>
     <script>
+
+        <!--Mapbox-->
         mapboxgl.accessToken = '{{ mapbox_access_token }}';//access token
         var map = new mapboxgl.Map({
         container: 'map',
@@ -13,6 +23,25 @@
         center: [10.404, 63.417],
         zoom: 12
         });
+
+        //MapMouseEvent and marker
+        map.on('click', function(e) {
+            // The event object (e) contains information like the
+            // coordinates of the point on the map that was clicked.
+            
+            //console.log('A click event has occurred at ' + e.lngLat + e.lngLat.lng);
+            
+            //marker
+            var marker = new mapboxgl.Marker()
+                    .setLngLat([e.lngLat.lng, e.lngLat.lat])
+                    .addTo(map);
+                    
+            //pop-up 
+            new mapboxgl.Popup()
+            .setLngLat([e.lngLat.lng, e.lngLat.lat])
+            .setHTML("<h1>Hello World!</h1>").addTo(map);
+        });
+
    </script>
 
 {% endblock content %}

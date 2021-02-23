@@ -9,3 +9,10 @@ def home(request):
 def about(request):
     return render(request, 'maps/about.html', {'title': 'About Us'})
 
+
+"""
+searchbar function
+def get_zipcode_searchbar(query=None):
+    queryset = []
+    queries = query.split(" ") #removing all whitespace
+"""
