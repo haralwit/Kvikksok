@@ -29,14 +29,20 @@
                 </div>
                 <!-- Navbar Right Side -->
                 <div class="navbar-nav">
+                <a class="nav-item nav-link" href="/admin">Admin</a>
                 <a class="nav-item nav-link" href="#">Her kommer en knapp</a>
-                <a class="nav-item nav-link" href="#">En annen knapp</a>
+                <a class="nav-item nav-link" href="/register">Opprett en bruker</a>
                 </div>
             </div>
             </div>
         </nav>
     </header>
     <div class='container'>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}"> {{ message }}</div>
+            {% endfor %}
+        {% endif %}
         {% block content %} {% endblock %}
     </div>
 
