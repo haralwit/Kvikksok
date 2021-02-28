@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import Post
 
 
 def home(request):
@@ -9,3 +10,8 @@ def home(request):
 def about(request):
     return render(request, 'maps/about.html', {'title': 'About Us'})
 
+def messages(request):
+    context = {
+        'posts' : Post.objects.all()
+    }
+    return render(request, 'maps/messages.html', context)
