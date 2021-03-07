@@ -131,3 +131,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'maps-home'
 LOGIN_URL = 'login'
+
+GDAL_LIBRARY_PATH = "C:/OSGeo4W64/bin/gdal301.dll"
