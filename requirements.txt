@@ -1,5 +1,9 @@
 Django==3.1.7
 django-crispy-forms==1.11.1
+<<<<<<< HEAD
 geos==0.2.3
 psycopg2==2.8.6
 psycopg2-binary==2.8.6
+=======
+psycopg2==2.8.6
+>>>>>>> 8a51fbfcf142760f0b85f273aafd7f916e1303ef
