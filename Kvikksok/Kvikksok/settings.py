@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'maps.apps.MapsConfig',
     'users.apps.UsersConfig',
+    'django.contrib.gis',
 ]
 
 MIDDLEWARE = [
@@ -78,8 +79,12 @@ WSGI_APPLICATION = 'Kvikksok.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'kvikksok',
+        'HOST':'Midtbo.asuscomm.com',
+        'USER':'postgres',
+        'PORT':'5432',
+        'PASSWORD':'heimkommune',
     }
 }
 
