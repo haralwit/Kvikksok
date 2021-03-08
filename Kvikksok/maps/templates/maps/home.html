@@ -45,31 +45,21 @@
             var nav = new mapboxgl.NavigationControl();
             var addmarker_boolen = false; 
             map.addControl(nav, 'top-left');
-
+            
             //allows user to add a marker
             function addMarker() {
                 addmarker_boolen = true;
                 console.log('addmarker is ' + addmarker_boolen)
             }
 
-
-            /*
-            var div = window.document.createElement('div');
-            div.innerHTML = 'Hello, world!';
-            var popup = new mapboxgl.Popup()
-            .setLngLat(e.lngLat)
-            .setDOMContent(div)
-            .addTo(map);
-            */
-
-
             //MapMouseEvent and marker
             map.on('click', function(e) {
                 if (addmarker_boolen == true) {
 
                     var div = window.document.createElement('div');
-                    var data="<form id='post'>Name:<br><input type='text' name='name'><br>Comment:<br><textarea rows='5' cols='50' name='textmsg'></textarea><br><input type='submit' value='comment'></from>"
-                    console.log(document.getElementById('post'))
+                    var data="<form id='post'>Name:<br><input type='text' name='name'><br>Comment:<br><textarea rows='5' cols='30' name='textmsg'></textarea><br><input type='submit' value='comment'></from>"
+                    console.log(window.document.getElementById('post'))
+                    console.log('hei')
                     div.innerHTML = data;
 
                     
