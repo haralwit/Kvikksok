@@ -99,22 +99,30 @@ var map = new mapboxgl.Map({
     
     //MapMouseEvent and marker
     map.on('click', function(e) {
-        if (addmarker_boolen == true) {
-            var marker = new mapboxgl.Marker({
-                    color: '#004fa4',
-                    draggable: true
-                })
-                .setLngLat([e.lngLat.lng, e.lngLat.lat])
-                .setPopup(
-                    new mapboxgl.Popup({})
-                    .setLngLat([e.lngLat.lng, e.lngLat.lat])
-                    .setHTML("<h1>Hello World!</h1>").addTo(map))
-                .addTo(map);
+      if (addmarker_boolen == true) {
 
-            addmarker_boolen = false;                
-        }
-    
-    });
+          var div = window.document.createElement('div');
+          var data="<form id='post'>Tittel:<br><input type='text' name='title'><br>Melding:<br><textarea rows='5' cols='30' name='textmsg'></textarea><br><input type='submit' value='send melding'></from>"
+          console.log(window.document.getElementById('post'))
+          console.log('hei')
+          div.innerHTML = data;
+
+          
+          var marker = new mapboxgl.Marker({
+                  color: '#004fa4',
+                  draggable: true
+              })
+              .setLngLat([e.lngLat.lng, e.lngLat.lat])
+              .setPopup(
+                  new mapboxgl.Popup({})
+                  .setLngLat([e.lngLat.lng, e.lngLat.lat])
+                  .setDOMContent(div))
+                  //.setHTML("<h1>Hello World!</h1>").addTo(map))
+              .addTo(map);
+
+          addmarker_boolen = false;                
+      }
+  });
 
     
 
