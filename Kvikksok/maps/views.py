@@ -7,7 +7,7 @@ def home(request):
     seralized_postnummer = serialize('geojson', Postnummer.objects.all())
     context = {
         'mapbox_access_token': mapbox_access_token,
-        'postnummers': seralized_postnummer,
+        'serialized_postnummer': seralized_postnummer,
     }
     return render(request, 'maps\home.html', 
                   context)

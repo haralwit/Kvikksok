@@ -92,6 +92,8 @@ var map = new mapboxgl.Map({
     document.getElementById("nyttPunkt").onclick = function() {addMarker()};
     //allows user to add a marker
     function addMarker() {
+        accessToken = '{{ mapbox_access_token }}';
+        console.log(accessToken)
         addmarker_boolen = true;
         console.log('addmarker is ' + addmarker_boolen)
     }
