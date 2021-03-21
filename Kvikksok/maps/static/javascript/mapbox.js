@@ -7,6 +7,7 @@ var map = new mapboxgl.Map({
     zoom: 12
  });
 
+ 
  function addDataLayer(){
     map.addSource('kvikkleire',{
         type: 'geojson',
