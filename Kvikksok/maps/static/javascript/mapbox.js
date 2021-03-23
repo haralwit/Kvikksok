@@ -1,8 +1,8 @@
 
-mapboxgl.accessToken = 'pk.eyJ1Ijoic2t1cDI1MDYiLCJhIjoiY2trMnJidzJkMTNyaDJvdDdrMmpuODR1biJ9.UozLDX9kk8-CC4irjB1nNQ';//access token
+mapboxgl.accessToken = 'pk.eyJ1IjoibGFmaXNlciIsImEiOiJja2dwcmlhaW8wc3h1Mndtb2VtOXplMWp0In0.Vi0BWSGA2uPlDSbm2tb9zQ';//access token
 var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/skup2506/ckl8epxj02oyt17s1vb1ghpnn',  //mapbox style URL
+    style: 'mapbox://styles/lafiser/ckmltml3c4hxe17s650pj4blq',  //mapbox style URL
     center: [10.404, 63.417],
     zoom: 12
 });
@@ -56,8 +56,13 @@ function ajaxRequest() {
     });
 }
 
+
+
+
 function addDataLayer(){
-   const geoleire = JSON.parse(kvikkleireGeojson);
+   const geoleire = 'static/KvikkleireUtlosningOmr.geojson';
+   
+
     map.addSource('kvikkleire',{
         type: 'geojson',
         data: geoleire
@@ -67,23 +72,26 @@ function addDataLayer(){
         type: 'fill',
         source: 'kvikkleire',
         paint: {
-        'fill-opacity': ['/',1.2,['get', 'skredrisik']],
+        'fill-opacity': ['/',['get', 'skredRisikoKvikkleireKlasse'],5.0],
         'fill-color':'#ff0000',
         },
       });
       map.on('click', 'fareOmrade', function(e) {
          new mapboxgl.Popup()
          .setLngLat(e.lngLat)
-         .setHTML("Skredrisikoen i heltaltsformat er " + e.features[0].properties.skredrisik)
+         .setHTML("Skredrisikoen i heltaltsformat er " + e.features[0].properties.skredRisikoKvikkleireKlasse)
          .addTo(map);
       });
       map.on('mouseenter', 'fareOmrade', function() {
          map.getCanvas().style.cursor = 'pointer';
       });
+   
+    
 }
 
 map.on("load", () => {
-    addDataLayer();
+    //addDataLayer();
+    
 });
 
 
