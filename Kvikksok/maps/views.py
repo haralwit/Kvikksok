@@ -1,5 +1,5 @@
-from django.shortcuts import render,redirect
-from .models import Post, Postnummer
+from django.shortcuts import render
+from .models import Post, Postnummer, Kvikkleire
 from django.core import serializers
 from .forms import PostForm
 
@@ -10,7 +10,7 @@ def home(request):
     return render(request, 'maps\home.html', 
                   { 'mapbox_access_token': mapbox_access_token,
                   'postnummers': Postnummer.objects.values("geom").all(),
-                  'posts' : data }
+                  'posts' : data}
                   )
 
 def savePost(request):

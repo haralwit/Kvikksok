@@ -57,24 +57,37 @@ function ajaxRequest() {
 }
 
 function addDataLayer(){
+   const geoleire = JSON.parse(kvikkleireGeojson);
     map.addSource('kvikkleire',{
         type: 'geojson',
-        data: 'static/kvikkleireUtlosningOmr.geojson'
+        data: geoleire
     });
     map.addLayer({
         id: 'fareOmrade',
         type: 'fill',
         source: 'kvikkleire',
         paint: {
-        'fill-opacity': ['/',1.0,['get', 'skredRisikoKvikkleireKlasse']],
+        'fill-opacity': ['/',1.2,['get', 'skredrisik']],
         'fill-color':'#ff0000',
         },
+      });
+      map.on('click', 'fareOmrade', function(e) {
+         new mapboxgl.Popup()
+         .setLngLat(e.lngLat)
+         .setHTML("Skredrisikoen i heltaltsformat er " + e.features[0].properties.skredrisik)
+         .addTo(map);
+      });
+      map.on('mouseenter', 'fareOmrade', function() {
+         map.getCanvas().style.cursor = 'pointer';
       });
 }
 
 map.on("load", () => {
     addDataLayer();
 });
+
+
+
 
 var coordinatesGeocoder = function (query) {
     // match anything which looks like a decimal degrees coordinate pair
