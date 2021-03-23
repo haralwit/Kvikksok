@@ -7,6 +7,55 @@ var map = new mapboxgl.Map({
     zoom: 12
 });
 
+//AJAX setup
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue =   decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+// $.ajaxSetup({
+//     beforeSend: function (xhr, settings) {
+//         if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+//             xhr.setRequestHeader("X-CSRFToken", "{{ form.csrf_token._value() }}")
+//         }
+//     }
+// })
+//AJAX REQUEST
+function ajaxRequest() {
+    $.ajax({
+        type: 'POST',
+        url: "addMarker/",
+        success: function(result){
+        console.log('PONG')
+        },
+        error : function (xmlHttpRequest, textStatus, errorThrown) {
+            console.log(errorThrown);
+        }
+    });
+}
+
 function addDataLayer(){
     map.addSource('kvikkleire',{
         type: 'geojson',
@@ -89,7 +138,6 @@ var addmarker_boolen = false;
 map.addControl(nav, 'top-left');
 
 
-
 //allows user to add a marker
 document.getElementById("nyttPunkt").onclick = function() {addMarker()};
 function addMarker() {
@@ -111,6 +159,19 @@ function showMarker() {
         // make a marker for each feature and add to the map
         new mapboxgl.Marker()
             .setLngLat(marker.geometry.coordinates)
+            .setPopup(
+                new mapboxgl.Popup({ offset: 25 }) // add popups
+                .setMaxWidth('none')
+                .setHTML(
+                '<h6>' +
+                marker.properties.title +
+                '</h6><p>' +
+                marker.properties.content +
+                '</p><p align="right" style="font-size:80%;">' +
+                marker.properties.date_posted +
+                '</p>'
+                )
+                )
             .addTo(map);
     });
 	console.log(geojsonParsed);
@@ -122,8 +183,11 @@ function showMarker() {
 //MapMouseEvent and marker
 map.on('click', function(e) {
   if (addmarker_boolen == true) {
-
+    
+    
 	var div = window.document.createElement('div');
+    //div.innerHTML
+    //var html_data = '<form method="POST">{{% csrf_token %}}<table>{{ form.as_table }}</table><button class="btn btn-outline-info" type="submit">Sign Up</button></div></form>';
 	var msgtitle = window.document.createElement("input");
 	msgtitle.setAttribute("id", "msgtitle");
 	var textarea = window.document.createElement("textarea");
@@ -136,60 +200,33 @@ map.on('click', function(e) {
 	submit.setAttribute("id", "submit");
 	submit.setAttribute("value", "Send melding");
 	submit.addEventListener("click", () => {
-		console.log(msgtitle.value,textarea.value);
-        console.log('hei');
-	})
+        console.log(msgtitle.value);
+        console.log(textarea.value);
+        ajaxRequest();
+    })
 	div.appendChild(msgtitle);
 	div.appendChild(textarea);
 	div.appendChild(submit);
 	
-
-
-      
+    
 	var marker = new mapboxgl.Marker({
 			color: '#004fa4',
 			draggable: true
 		})
 		.setLngLat([e.lngLat.lng, e.lngLat.lat])
 		.setPopup(
-			new mapboxgl.Popup({})
-			.setLngLat([e.lngLat.lng, e.lngLat.lat])
-			.setDOMContent(div))
+			new mapboxgl.Popup()
+		    .setDOMContent(div))
+            //.setHTML(html_data))
 		.addTo(map);
+        marker.togglePopup();
+    
     addmarker_boolen = false;                
   }
 });
 
     
 
-document.getElementById("Static_locaitons").onclick = function() {getGeojson_points()};
-function getGeojson_points() {
-    map.addSource('postnummer',{
-            type: 'geojson',
-            data: {
-                    "type": "FeatureCollection",
-                    "name": "postNummer",
-                    //"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-                    "features": [
-                        { "type": "Feature", "properties": { "postnummer": 1354, "poststed": "B�RUMS VERK" }, "geometry": { "type": "Point", "coordinates": [ 10.495188707896558, 59.942997421825446 ] } },
-                        { "type": "Feature", "properties": { "postnummer": 2092, "poststed": "MINNESUND" }, "geometry": { "type": "Point", "coordinates": [ 11.230517825998556, 60.427781233028846 ] } },
-                        { "type": "Feature", "properties": { "postnummer": 3536, "poststed": "NORESUND" }, "geometry": { "type": "Point", "coordinates": [ 9.602099500044879, 60.230940730555595 ] } },
-                        { "type": "Feature", "properties": { "postnummer": 274, "poststed": "OSLO" }, "geometry": { "type": "Point", "coordinates": [ 10.692964774885331, 59.924863418008385 ] } }
-                        ] 
-                    }
-    }); 
-
-    map.addLayer({
-        id: 'postnummer_senter  ',
-        type: 'circle',
-        source: 'postnummer',
-        'paint': {
-        'circle-radius': 6,
-        'circle-color': '#B42222'
-        },
-        'filter': ['==', '$type', 'Point']
-    });  
-}
 
 
 
