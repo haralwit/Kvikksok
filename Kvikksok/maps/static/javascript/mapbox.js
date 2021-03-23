@@ -60,29 +60,14 @@ function ajaxRequest() {
 
 
 function addDataLayer(){
-   const geoleire = 'static/KvikkleireUtlosningOmr.geojson';
-   
 
-    map.addSource('kvikkleire',{
-        type: 'geojson',
-        data: geoleire
-    });
-    map.addLayer({
-        id: 'fareOmrade',
-        type: 'fill',
-        source: 'kvikkleire',
-        paint: {
-        'fill-opacity': ['/',['get', 'skredRisikoKvikkleireKlasse'],5.0],
-        'fill-color':'#ff0000',
-        },
-      });
-      map.on('click', 'fareOmrade', function(e) {
+      map.on('click', 'kvikkleireRisk', function(e) {
          new mapboxgl.Popup()
          .setLngLat(e.lngLat)
-         .setHTML("Skredrisikoen i heltaltsformat er " + e.features[0].properties.skredRisikoKvikkleireKlasse)
+         .setHTML("Skredrisikoen i heltaltsformat er " + e.features[0].properties.skredRisik)
          .addTo(map);
       });
-      map.on('mouseenter', 'fareOmrade', function() {
+      map.on('mouseenter', 'kvikkleireRisk', function() {
          map.getCanvas().style.cursor = 'pointer';
       });
    
@@ -90,7 +75,7 @@ function addDataLayer(){
 }
 
 map.on("load", () => {
-    //addDataLayer();
+    addDataLayer();
     
 });
 
