@@ -70,6 +70,10 @@ function addDataLayer(){
       map.on('mouseenter', 'kvikkleireRisk', function() {
          map.getCanvas().style.cursor = 'pointer';
       });
+      map.on('mouseleave', 'kvikkleireRisk', function() {
+        map.getCanvas().style.cursor = '';
+     });
+      
    
     
 }
