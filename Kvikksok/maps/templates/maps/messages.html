@@ -1,5 +1,6 @@
 {% extends "maps/base.html" %}
 {% block content %}
+<div class="container">
   {% for post in posts %}
         <article class="media content-section">
           <div class="media-body">
@@ -9,8 +10,9 @@
             </div>
             <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
             <p class="article-content">{{ post.content}} </p>
-            <p style="text-align: right;">Koodinater til varselet: {{post.geom.coords}}</p>
+            <p style="text-align: right;">Koodinater til varselet: {{post.geom.coords.0|floatformat:4}}, {{post.geom.coords.1|floatformat:4}}</p>
           </div>
         </article>
     {% endfor %}
+</div>
 {% endblock content %}
