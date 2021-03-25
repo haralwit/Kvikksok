@@ -1,7 +1,9 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 from .models import Post, Postnummer, Kvikkleire
+from django.contrib.auth.models import User 
 from django.core import serializers
-from .forms import PostForm
+from django.contrib.gis.geos import Point
 
 
 def home(request):
@@ -14,17 +16,16 @@ def home(request):
                   )
 
 def savePost(request):
-    print('1')
-    if request.method == 'POST':
-        print('2')
-        form = PostForm(request.POST)
-        if form.is_valid():
-            print('3')
-            form.save()
-            title = form.cleaned_data.get('username')
-            messages.success(request, f"{title}-Marker is saved")
-            return redirect('maps-about', )
-
+    if request.method == 'POST' and request.user.is_authenticated:
+        title = request.POST['title']
+        msg = request.POST.get('msg', "none")
+        latitude = request.POST.get('latitude', "none")
+        longitude = request.POST.get('longitude', "none")
+        user = request.user
+        markerlocation = Point(float(longitude), float(latitude), srid=4326)
+        marker = Post(title=title, content=msg, author = user, geom = markerlocation)
+        marker.save()
+        return HttpResponse('request passes')
 
 def about(request):
     return render(request, 'maps/about.html', {'title': 'About Us'})

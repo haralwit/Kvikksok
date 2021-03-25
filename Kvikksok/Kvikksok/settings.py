@@ -84,12 +84,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'kvikksok',
-        'HOST':'Midtbo.asuscomm.com',
-        #'HOST':'localhost',
+        #'HOST':'Midtbo.asuscomm.com',
+        'HOST':'localhost',
         'USER':'postgres',
         'PORT':'5432',
-        'PASSWORD':'heimkommune',
-        #'PASSWORD':'ost'
+        #'PASSWORD':'heimkommune',
+        'PASSWORD':'admin'
     }
 }
 

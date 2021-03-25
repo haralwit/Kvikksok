@@ -1,4 +1,4 @@
-
+import { ajaxRequest } from './api.js';
 mapboxgl.accessToken = 'pk.eyJ1Ijoic2t1cDI1MDYiLCJhIjoiY2trMnJidzJkMTNyaDJvdDdrMmpuODR1biJ9.UozLDX9kk8-CC4irjB1nNQ';//access token
 var map = new mapboxgl.Map({
     container: 'map',
@@ -6,87 +6,6 @@ var map = new mapboxgl.Map({
     center: [10.404, 63.417],
     zoom: 12
 });
-
-//AJAX setup
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue =   decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-var csrftoken = getCookie('csrftoken');
-function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
-$.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-        }
-    }
-});
-// $.ajaxSetup({
-//     beforeSend: function (xhr, settings) {
-//         if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-//             xhr.setRequestHeader("X-CSRFToken", "{{ form.csrf_token._value() }}")
-//         }
-//     }
-// })
-//AJAX REQUEST
-function ajaxRequest() {
-    $.ajax({
-        type: 'POST',
-        url: "addMarker/",
-        success: function(result){
-        console.log('PONG')
-        },
-        error : function (xmlHttpRequest, textStatus, errorThrown) {
-            console.log(errorThrown);
-        }
-    });
-}
-
-function addDataLayer(){
-   const geoleire = JSON.parse(kvikkleireGeojson);
-    map.addSource('kvikkleire',{
-        type: 'geojson',
-        data: geoleire
-    });
-    map.addLayer({
-        id: 'fareOmrade',
-        type: 'fill',
-        source: 'kvikkleire',
-        paint: {
-        'fill-opacity': ['/',1.2,['get', 'skredrisik']],
-        'fill-color':'#ff0000',
-        },
-      });
-      map.on('click', 'fareOmrade', function(e) {
-         new mapboxgl.Popup()
-         .setLngLat(e.lngLat)
-         .setHTML("Skredrisikoen i heltaltsformat er " + e.features[0].properties.skredrisik)
-         .addTo(map);
-      });
-      map.on('mouseenter', 'fareOmrade', function() {
-         map.getCanvas().style.cursor = 'pointer';
-      });
-}
-
-map.on("load", () => {
-    addDataLayer();
-});
-
-
 
 
 var coordinatesGeocoder = function (query) {
@@ -213,9 +132,9 @@ map.on('click', function(e) {
 	submit.setAttribute("id", "submit");
 	submit.setAttribute("value", "Send melding");
 	submit.addEventListener("click", () => {
-        console.log(msgtitle.value);
-        console.log(textarea.value);
-        ajaxRequest();
+        var title = msgtitle.value;
+        var msg = textarea.value;
+        ajaxRequest(title, msg, e.lngLat.lat, e.lngLat.lng);
     })
 	div.appendChild(msgtitle);
 	div.appendChild(textarea);
@@ -233,8 +152,8 @@ map.on('click', function(e) {
             //.setHTML(html_data))
 		.addTo(map);
         marker.togglePopup();
-    
-    addmarker_boolen = false;                
+    addmarker_boolen = false;
+                 
   }
 });
 
