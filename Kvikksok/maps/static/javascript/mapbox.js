@@ -1,4 +1,5 @@
 import { ajaxRequest } from './api.js';
+
 mapboxgl.accessToken = 'pk.eyJ1IjoibGFmaXNlciIsImEiOiJja2dwcmlhaW8wc3h1Mndtb2VtOXplMWp0In0.Vi0BWSGA2uPlDSbm2tb9zQ';//access token
 var map = new mapboxgl.Map({
     container: 'map',
@@ -7,25 +8,31 @@ var map = new mapboxgl.Map({
     zoom: 12
 });
 
- function addDataLayer(){
-    map.addSource('kvikkleire',{
-        type: 'geojson',
-        data: 'static/kvikkleireUtlosningOmr.geojson'
-    });
-    map.addLayer({
-        id: 'fareOmrade',
-        type: 'fill',
-        source: 'kvikkleire',
-        paint: {
-        'fill-opacity': ['/',1.0,['get', 'skredRisikoKvikkleireKlasse']],
-        'fill-color':'#ff0000',
-        },
-      });
- }
 
- map.on("load", () => {
-    //addDataLayer();
-  });
+function addDataLayer(){
+
+      map.on('click', 'kvikkleireRisk', function(e) {
+         new mapboxgl.Popup()
+         .setLngLat(e.lngLat)
+         .setHTML("Skredrisikoen i heltaltsformat er " + e.features[0].properties.skredRisik)
+         .addTo(map);
+      });
+      map.on('mouseenter', 'kvikkleireRisk', function() {
+         map.getCanvas().style.cursor = 'pointer';
+      });
+      map.on('mouseleave', 'kvikkleireRisk', function() {
+        map.getCanvas().style.cursor = '';
+     });
+      
+   
+    
+}
+
+map.on("load", () => {
+    addDataLayer();
+    
+});
+
 
   var coordinatesGeocoder = function (query) {
     // match anything which looks like a decimal degrees coordinate pair
@@ -77,7 +84,7 @@ map.addControl(
        new MapboxGeocoder({
           accessToken: mapboxgl.accessToken,
           localGeocoder: coordinatesGeocoder,
-          zoom: 4,
+          //zoom: 15,
           placeholder: 'Stedsnavn/Koordinater',
           mapboxgl: mapboxgl
        })
