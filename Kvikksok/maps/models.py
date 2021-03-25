@@ -32,5 +32,28 @@ class Post(models.Model):
         return self.title
 
 
+class Kvikkleire(models.Model):
+    skredomrid = models.BigIntegerField()
+    skredomrna = models.CharField(max_length=36)
+    arealkm2 = models.FloatField()
+    skredfareg = models.CharField(max_length=7)
+    skredskade = models.BigIntegerField()
+    skredrisik = models.BigIntegerField()
+    skredkvalk = models.BigIntegerField()
+    geom = models.MultiPolygonField(srid=4326)
+
+    def __str__(self):
+        return self.skredomrna
 
 
+# Auto-generated `LayerMapping` dictionary for Kvikkleire model
+kvikkleire_mapping = {
+    'skredomrid': 'skredOmrID',
+    'skredomrna': 'skredOmrNa',
+    'arealkm2': 'arealKm2',
+    'skredfareg': 'skredFareg',
+    'skredskade': 'skredSkade',
+    'skredrisik': 'skredRisik',
+    'skredkvalk': 'skredKvalK',
+    'geom': 'MULTIPOLYGON',
+}
