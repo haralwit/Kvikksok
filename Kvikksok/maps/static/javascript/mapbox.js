@@ -136,7 +136,7 @@ map.addControl(
        new MapboxGeocoder({
           accessToken: mapboxgl.accessToken,
           localGeocoder: coordinatesGeocoder,
-          zoom: 4,
+          //zoom: 15,
           placeholder: 'Stedsnavn/Koordinater',
           mapboxgl: mapboxgl
        })
