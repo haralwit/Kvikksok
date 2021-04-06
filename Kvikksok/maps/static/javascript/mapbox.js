@@ -1,14 +1,40 @@
 import { ajaxRequest } from './api.js';
-mapboxgl.accessToken = 'pk.eyJ1Ijoic2t1cDI1MDYiLCJhIjoiY2trMnJidzJkMTNyaDJvdDdrMmpuODR1biJ9.UozLDX9kk8-CC4irjB1nNQ';//access token
+
+mapboxgl.accessToken = 'pk.eyJ1IjoibGFmaXNlciIsImEiOiJja2dwcmlhaW8wc3h1Mndtb2VtOXplMWp0In0.Vi0BWSGA2uPlDSbm2tb9zQ';//access token
 var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/skup2506/ckl8epxj02oyt17s1vb1ghpnn',  //mapbox style URL
+    style: 'mapbox://styles/lafiser/ckmltml3c4hxe17s650pj4blq',  //mapbox style URL
     center: [10.404, 63.417],
     zoom: 12
 });
 
 
-var coordinatesGeocoder = function (query) {
+function addDataLayer(){
+
+      map.on('click', 'kvikkleireRisk', function(e) {
+         new mapboxgl.Popup()
+         .setLngLat(e.lngLat)
+         .setHTML("Skredrisikoen i heltaltsformat er " + e.features[0].properties.skredRisik)
+         .addTo(map);
+      });
+      map.on('mouseenter', 'kvikkleireRisk', function() {
+         map.getCanvas().style.cursor = 'pointer';
+      });
+      map.on('mouseleave', 'kvikkleireRisk', function() {
+        map.getCanvas().style.cursor = '';
+     });
+      
+   
+    
+}
+
+map.on("load", () => {
+    addDataLayer();
+    
+});
+
+
+  var coordinatesGeocoder = function (query) {
     // match anything which looks like a decimal degrees coordinate pair
        var matches = query.match(
           /^[ ]*(?:Lat: )?(-?\d+\.?\d*)[, ]+(?:Lng: )?(-?\d+\.?\d*)[ ]*$/i
@@ -58,7 +84,7 @@ map.addControl(
        new MapboxGeocoder({
           accessToken: mapboxgl.accessToken,
           localGeocoder: coordinatesGeocoder,
-          zoom: 4,
+          //zoom: 15,
           placeholder: 'Stedsnavn/Koordinater',
           mapboxgl: mapboxgl
        })
@@ -158,7 +184,3 @@ map.on('click', function(e) {
 });
 
     
-
-
-
-
