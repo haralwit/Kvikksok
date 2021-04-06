@@ -3,3 +3,8 @@ django-crispy-forms==1.11.1
 geos==0.2.3
 psycopg2==2.8.6
 psycopg2-binary==2.8.6
+
+
+# Install OSGeo4W
+# Modify Windows Environement
+# https://docs.djangoproject.com/en/3.1/ref/contrib/gis/install/?fbclid=IwAR3CeI3C1_6mmEPsCTmkAr3gMfI8E9deCRXrKLgi0bl3PHwXu4hZXw3W3QQ#modify-windows-environment
