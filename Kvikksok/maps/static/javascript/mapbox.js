@@ -142,7 +142,7 @@ function showMarker() {
 map.on('click', function(e) {
   if (addmarker_boolen == true) {
     
-    
+	var dataSaved = false;	
 	var div = window.document.createElement('div');
     //div.innerHTML
     //var html_data = '<form method="POST">{{% csrf_token %}}<table>{{ form.as_table }}</table><button class="btn btn-outline-info" type="submit">Sign Up</button></div></form>';
@@ -158,9 +158,16 @@ map.on('click', function(e) {
 	submit.setAttribute("id", "submit");
 	submit.setAttribute("value", "Send melding");
 	submit.addEventListener("click", () => {
-        var title = msgtitle.value;
-        var msg = textarea.value;
-        ajaxRequest(title, msg, e.lngLat.lat, e.lngLat.lng);
+
+				if(!dataSaved){
+					var title = msgtitle.value;
+					var msg = textarea.value;
+					ajaxRequest(title, msg, e.lngLat.lat, e.lngLat.lng);
+					dataSaved = true;
+				}else{
+					console.log('marked is added')
+				}
+        
     })
 	div.appendChild(msgtitle);
 	div.appendChild(textarea);
