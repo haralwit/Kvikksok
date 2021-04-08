@@ -99,7 +99,6 @@ map.addControl(nav, 'top-left');
 //allows user to add a marker
 document.getElementById("nyttPunkt").onclick = function() {addMarker()};
 function addMarker() {
-    
     addmarker_boolen = true;
     console.log('addmarker is ' + addmarker_boolen)
 }
@@ -142,10 +141,10 @@ function showMarker() {
 map.on('click', function(e) {
   if (addmarker_boolen == true) {
     
-	var dataSaved = false;	
+	var dataSaved = false;
+   
+   //Creating popup-div content	
 	var div = window.document.createElement('div');
-    //div.innerHTML
-    //var html_data = '<form method="POST">{{% csrf_token %}}<table>{{ form.as_table }}</table><button class="btn btn-outline-info" type="submit">Sign Up</button></div></form>';
 	var msgtitle = window.document.createElement("input");
 	msgtitle.setAttribute("id", "msgtitle");
 	var textarea = window.document.createElement("textarea");
@@ -157,23 +156,22 @@ map.on('click', function(e) {
 	submit.setAttribute("type", "submit");
 	submit.setAttribute("id", "submit");
 	submit.setAttribute("value", "Send melding");
+   //Eventlistner for sending marker data
 	submit.addEventListener("click", () => {
-
-				if(!dataSaved){
-					var title = msgtitle.value;
-					var msg = textarea.value;
-					ajaxRequest(title, msg, e.lngLat.lat, e.lngLat.lng);
-					dataSaved = true;
-				}else{
-					console.log('marked is added')
-				}
-        
-    })
+      if(!dataSaved){
+         var title = msgtitle.value;
+         var msg = textarea.value;
+         ajaxRequest(title, msg, e.lngLat.lat, e.lngLat.lng);
+         dataSaved = true;
+      }else{
+         console.log('marker is added')
+      }
+   })
 	div.appendChild(msgtitle);
 	div.appendChild(textarea);
 	div.appendChild(submit);
 	
-    
+   //Mapbox-marker and -popup
 	var marker = new mapboxgl.Marker({
 			color: '#004fa4',
 			draggable: true
@@ -181,13 +179,14 @@ map.on('click', function(e) {
 		.setLngLat([e.lngLat.lng, e.lngLat.lat])
 		.setPopup(
 			new mapboxgl.Popup()
-		    .setDOMContent(div))
-            //.setHTML(html_data))
+           .setDOMContent(div))    
 		.addTo(map);
-        marker.togglePopup();
-    addmarker_boolen = false;
-                 
+      
+      marker.togglePopup();
+      addmarker_boolen = false;
+      map.panTo(e.lngLat)
   }
+   
 });
 
     
