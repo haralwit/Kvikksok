@@ -84,12 +84,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'kvikksok',
-        'HOST':'Midtbo.asuscomm.com',
-        #'HOST':'localhost',
+        #'HOST':'Midtbo.asuscomm.com',
+        'HOST':'localhost',
         'USER':'postgres',
         'PORT':'5432',
-        'PASSWORD':'heimkommune',
-        #'PASSWORD':'admin',
+        #'PASSWORD':'heimkommune',
+        'PASSWORD':'admin',
     }
 }
 
@@ -141,5 +141,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'maps-home'
 LOGIN_URL = 'login'
 
-GDAL_LIBRARY_PATH ="C:/OSGeo4W64/bin/gdal301.dll"
+GDAL_LIBRARY_PATH ="C:/OSGeo4W64/bin/gdal204.dll"
 GEOS_LIBRARY_PATH ='C:/OSGeo4W64/bin/geos_c.dll'
