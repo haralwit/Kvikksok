@@ -1,5 +1,8 @@
 import { ajaxRequest } from './api.js';
 
+
+
+
 mapboxgl.accessToken = 'pk.eyJ1IjoibGFmaXNlciIsImEiOiJja2dwcmlhaW8wc3h1Mndtb2VtOXplMWp0In0.Vi0BWSGA2uPlDSbm2tb9zQ';//access token
 var map = new mapboxgl.Map({
     container: 'map',
@@ -99,8 +102,12 @@ map.addControl(nav, 'top-left');
 //allows user to add a marker
 document.getElementById("nyttPunkt").onclick = function() {addMarker()};
 function addMarker() {
-    addmarker_boolen = true;
-    console.log('addmarker is ' + addmarker_boolen)
+   if(isAuthenticated){
+      addmarker_boolen = true;
+      console.log('addmarker is ' + addmarker_boolen)
+   }else{
+      alert("Logg inn eller registerer bruker for å lage knapper.")
+   }
 }
 
 //Show usermarkers from database
@@ -133,7 +140,15 @@ function showMarker() {
     });
 	console.log(geojsonParsed);
 
-	
+	// map.on('zoom', function() {
+   //    //isRemoved = false;
+   //    if(map.getZoom()<10){
+   //       marker.remove();
+   //    }
+   //    else if (map.getZoom()>10){
+   //       marker.addTo(map);
+   //    }
+   // });
 }
 
 
@@ -164,7 +179,7 @@ map.on('click', function(e) {
          ajaxRequest(title, msg, e.lngLat.lat, e.lngLat.lng);
          dataSaved = true;
       }else{
-         console.log('marker is added')
+         console.log('already marker is added')
       }
    })
 	div.appendChild(msgtitle);
