@@ -111,29 +111,31 @@ function addMarker() {
 
 //Show usermarkers from database
 document.getElementById("showMarkers").onclick = function() {showMarker()};
+var IsVisibile = false;
 function showMarker() {
-   const geojsonParsed = JSON.parse(geojson);
-   geojsonParsed.features.forEach(function(marker)  {
-
-
-       // make a marker for each feature and add to the map
-       new mapboxgl.Marker()
-           .setLngLat(marker.geometry.coordinates)
-           .setPopup(
-               new mapboxgl.Popup({ offset: 25 }) // add popups
-               .setMaxWidth('none')
-               .setHTML(
-               '<h6>' +
-               marker.properties.title +
-               '</h6><p>' +
-               marker.properties.content +
-               '</p><p align="right" style="font-size:80%;">' +
-               marker.properties.date_posted +
-               '</p>'
-               )
-               )
-           .addTo(map);
-   });
+   if(!IsVisibile) {
+      const geojsonParsed = JSON.parse(geojson);
+      geojsonParsed.features.forEach(function(marker)  {
+          // make a marker for each feature and add to the map
+          new mapboxgl.Marker()
+              .setLngLat(marker.geometry.coordinates)
+              .setPopup(
+                  new mapboxgl.Popup({ offset: 25 }) // add popups
+                  .setMaxWidth('none')
+                  .setHTML(
+                  '<h6>' +
+                  marker.properties.title +
+                  '</h6><p>' +
+                  marker.properties.content +
+                  '</p><p align="right" style="font-size:80%;">' +
+                  marker.properties.date_posted +
+                  '</p>'
+                  )
+                  )
+              .addTo(map);
+      });
+      IsVisibile = true
+   }
   console.log(geojsonParsed);
 
 }
