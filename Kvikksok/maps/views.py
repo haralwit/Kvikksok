@@ -4,6 +4,7 @@ from .models import Post, Postnummer, Kvikkleire
 from django.contrib.auth.models import User 
 from django.core import serializers
 from django.contrib.gis.geos import Point
+from django.views.generic import ListView, DetailView, CreateView
 
 
 def home(request):
@@ -35,3 +36,16 @@ def messages(request):
         'posts' : Post.objects.all(),
     }
     return render(request, 'maps/messages.html', context)
+
+class PostListView(ListView):
+    model = Post
+    template_name = 'maps/messages.html'
+    context_object_name = 'posts'
+    ordering = ['-date_posted']
+
+class PostDetailView(DetailView):
+    model = Post
+
+class PostCreateView(CreateView):
+    model = Post
+    fields = ['title', 'content']

@@ -1,0 +1,16 @@
+{% extends "maps/base.html" %}
+{% block content %}
+<div class="container">
+    <article class="media content-section">
+        <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2" href="#">{{ object.author }}</a>
+            <small class="text-muted">{{ object.date_posted|date:"F d, Y"  }}</small>
+        </div>
+        <h2 class="article-title" >{{ object.title }}</a></h2>
+        <p class="article-content">{{ object.content}} </p>
+        <p style="text-align: right;">Koodinater til varselet: {{object.geom.coords.0|floatformat:4}}, {{object.geom.coords.1|floatformat:4}}</p>
+        </div>
+    </article>
+</div>
+{% endblock content %}
