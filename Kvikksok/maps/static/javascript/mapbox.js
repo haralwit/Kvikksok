@@ -3,6 +3,7 @@ import { ajaxRequest } from './api.js';
 
 
 
+
 mapboxgl.accessToken = 'pk.eyJ1IjoibGFmaXNlciIsImEiOiJja2dwcmlhaW8wc3h1Mndtb2VtOXplMWp0In0.Vi0BWSGA2uPlDSbm2tb9zQ';//access token
 var map = new mapboxgl.Map({
     container: 'map',
@@ -111,42 +112,30 @@ function addMarker() {
 //Show usermarkers from database
 document.getElementById("showMarkers").onclick = function() {showMarker()};
 function showMarker() {
-    const geojsonParsed = JSON.parse(geojson);
-    geojsonParsed.features.forEach(function(marker)  {
+   const geojsonParsed = JSON.parse(geojson);
+   geojsonParsed.features.forEach(function(marker)  {
 
-        // create a HTML element for each feature
-        //var el = document.createElement('div');
-        //el.className = 'marker';
 
-        // make a marker for each feature and add to the map
-        new mapboxgl.Marker()
-            .setLngLat(marker.geometry.coordinates)
-            .setPopup(
-                new mapboxgl.Popup({ offset: 25 }) // add popups
-                .setMaxWidth('none')
-                .setHTML(
-                '<h6>' +
-                marker.properties.title +
-                '</h6><p>' +
-                marker.properties.content +
-                '</p><p align="right" style="font-size:80%;">' +
-                marker.properties.date_posted +
-                '</p>'
-                )
-                )
-            .addTo(map);
-    });
-	console.log(geojsonParsed);
+       // make a marker for each feature and add to the map
+       new mapboxgl.Marker()
+           .setLngLat(marker.geometry.coordinates)
+           .setPopup(
+               new mapboxgl.Popup({ offset: 25 }) // add popups
+               .setMaxWidth('none')
+               .setHTML(
+               '<h6>' +
+               marker.properties.title +
+               '</h6><p>' +
+               marker.properties.content +
+               '</p><p align="right" style="font-size:80%;">' +
+               marker.properties.date_posted +
+               '</p>'
+               )
+               )
+           .addTo(map);
+   });
+  console.log(geojsonParsed);
 
-	// map.on('zoom', function() {
-   //    //isRemoved = false;
-   //    if(map.getZoom()<10){
-   //       marker.remove();
-   //    }
-   //    else if (map.getZoom()>10){
-   //       marker.addTo(map);
-   //    }
-   // });
 }
 
 
@@ -170,6 +159,8 @@ map.on('click', function(e) {
 	submit.setAttribute("type", "submit");
 	submit.setAttribute("id", "submit");
 	submit.setAttribute("value", "Send melding");
+   //submit.setAttribute("disabled", "true");
+
    //Eventlistner for sending marker data
 	submit.addEventListener("click", () => {
       if(!dataSaved){
@@ -177,6 +168,8 @@ map.on('click', function(e) {
          var msg = textarea.value;
          ajaxRequest(title, msg, e.lngLat.lat, e.lngLat.lng);
          dataSaved = true;
+         marker.togglePopup();
+         {{location.reload()}}
       }else{
          console.log('already marker is added')
       }
@@ -195,7 +188,6 @@ map.on('click', function(e) {
 			new mapboxgl.Popup()
            .setDOMContent(div))    
 		.addTo(map);
-      
       marker.togglePopup();
       addmarker_boolen = false;
       map.panTo(e.lngLat)
