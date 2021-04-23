@@ -26,8 +26,6 @@ function addDataLayer(){
       map.on('mouseleave', 'kvikkleireRisk', function() {
         map.getCanvas().style.cursor = '';
      });
-      
-   
     
 }
 
@@ -155,18 +153,19 @@ function showMarker() {
 //MapMouseEvent and marker
 map.on('click', function(e) {
   if (addmarker_boolen == true) {
-    
 	var dataSaved = false;
    
    //Creating popup-div content	
 	var div = window.document.createElement('div');
 	var msgtitle = window.document.createElement("input");
 	msgtitle.setAttribute("id", "msgtitle");
+   msgtitle.setAttribute("placeholder", "Tittel");
 	var textarea = window.document.createElement("textarea");
 	textarea.setAttribute("rows", "5");
 	textarea.setAttribute("cols", "30");
 	textarea.setAttribute("name", "textmsg");
 	textarea.setAttribute("id", "msg");
+   textarea.setAttribute("placeholder", "Beskriv obeservasjon her ...");
 	var submit = window.document.createElement("input");
 	submit.setAttribute("type", "submit");
 	submit.setAttribute("id", "submit");
