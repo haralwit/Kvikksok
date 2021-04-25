@@ -14,7 +14,7 @@ function addDataLayer(){
       map.on('click', 'kvikkleireRisk', function(e) {
          new mapboxgl.Popup()
          .setLngLat(e.lngLat)
-         .setHTML("Skredrisikoen har nivå:   " + "<b>" +  e.features[0].properties.skredRisik + "</b>" +"<br>" + "Skred sannsynligheten har nivå:  " + "<b>" + e.features[0].properties.skredFareg + "</b>" + "<br>" + "For mer info gå til <b> Skred</b>.")
+         .setHTML("Skredrisikoen har nivå:   " + "<b>" +  e.features[0].properties.skredRisik + "</b>" +"<br>" + "Skredfaren har nivå:  " + "<b>" + e.features[0].properties.skredFareg + "</b>" + "<br>" + "For mer info gå til <b> Skred</b>.")
          .addTo(map);
       });
       map.on('mouseenter', 'kvikkleireRisk', function() {
