@@ -21,6 +21,10 @@
     </div>
 
     <div id='map'>
+        <script>
+            /// Global variable for user.is_authenticated
+            var isAuthenticated = '{{request.user.is_authenticated}}' === 'True'; 
+        </script>
         <script>var geojson = '{{posts|safe}}';</script> <!-- using |escapejs to remove "&qout" -->
         <script>var kvikkleireGeojson = '{{kvikkleire|safe}}';</script>
         <script src='static/javascript/api.js'   type="module"></script>
