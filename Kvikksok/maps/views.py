@@ -4,7 +4,8 @@ from .models import Post, Postnummer, Kvikkleire
 from django.contrib.auth.models import User 
 from django.core import serializers
 from django.contrib.gis.geos import Point
-from django.views.generic import ListView, DetailView, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 
 def home(request):
@@ -46,6 +47,18 @@ class PostListView(ListView):
 class PostDetailView(DetailView):
     model = Post
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ['title', 'content']
+    fields = ['title', 'content', 'geom']
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+class PostUpdateView(LoginRequiredMixin, UpdateView):
+    model = Post
+    fields = ['title', 'content', 'geom']
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
