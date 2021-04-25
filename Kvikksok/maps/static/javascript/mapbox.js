@@ -109,37 +109,6 @@ function addMarker() {
    }
 }
 
-//Show usermarkers from database
-document.getElementById("showMarkers").onclick = function() {showMarker()};
-var IsVisibile = false;
-function showMarker() {
-   if(!IsVisibile) {
-      const geojsonParsed = JSON.parse(geojson);
-      geojsonParsed.features.forEach(function(marker)  {
-          // make a marker for each feature and add to the map
-          new mapboxgl.Marker()
-              .setLngLat(marker.geometry.coordinates)
-              .setPopup(
-                  new mapboxgl.Popup({ offset: 25 }) // add popups
-                  .setMaxWidth('none')
-                  .setHTML(
-                  '<h6>' +
-                  marker.properties.title +
-                  '</h6><p>' +
-                  marker.properties.content +
-                  '</p><p align="right" style="font-size:80%;">' +
-                  marker.properties.date_posted +
-                  '</p>'
-                  )
-                  )
-              .addTo(map);
-      });
-      IsVisibile = true
-   }
-  console.log(geojsonParsed);
-
-}
-
 
 //MapMouseEvent and marker
 map.on('click', function(e) {
@@ -161,7 +130,7 @@ map.on('click', function(e) {
 	submit.setAttribute("type", "submit");
 	submit.setAttribute("id", "submit");
 	submit.setAttribute("value", "Send melding");
-   //submit.setAttribute("disabled", "true");
+   
 
    //Eventlistner for sending marker data
 	submit.addEventListener("click", () => {
@@ -171,10 +140,13 @@ map.on('click', function(e) {
          ajaxRequest(title, msg, e.lngLat.lat, e.lngLat.lng);
          dataSaved = true;
          marker.togglePopup();
-         {{location.reload()}}
+         {{location.reload()}};
+         geojson = '{{posts|safe}}';
+         console.log(geojson);
       }else{
-         console.log('already marker is added')
+         console.log('already marker is added');
       }
+      
    })
 	div.appendChild(msgtitle);
 	div.appendChild(textarea);
@@ -198,3 +170,41 @@ map.on('click', function(e) {
 });
 
     
+//Show usermarkers from database
+document.getElementById("showMarkers").onclick = function() {showMarker()};
+var IsVisibile = false;
+var markers = []
+function showMarker() {
+
+   //creating markers from geojson
+   const geojsonParsed = JSON.parse(geojson);
+   geojsonParsed.features.forEach(function(marker)  {
+      // make a marker for each feature and add to the map
+      const nymarker = new mapboxgl.Marker()
+         .setLngLat(marker.geometry.coordinates)
+         .setPopup(
+            new mapboxgl.Popup({ offset: 25 }) // add popups
+            .setMaxWidth('none')
+            .setHTML(
+            '<h6>' +
+            marker.properties.title +
+            '</h6><p>' +
+            marker.properties.content +
+            '</p><p align="right" style="font-size:80%;">' +
+            marker.properties.date_posted +
+            '</p>'
+            )
+            )
+         .addTo(map);
+      markers.push(nymarker)
+   });
+
+   //toggle markers
+   if(!IsVisibile) {
+      IsVisibile = true;
+   }else{
+      markers.forEach( (marker) => marker.remove());
+      IsVisibile = false;
+   }   
+   //console.log(geojsonParsed);
+}
