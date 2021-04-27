@@ -27,7 +27,7 @@ SECRET_KEY = 'l+%p3)p2^6squogf!ow(w#*-d5(@e86e4$96ubsse86_@uf0y2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["geomatikk.ibm.ntnu.no"]
 
 #GDAL_LIBRARY_PATH = 'C:/OSGeo4W64/bin/gdal301.dll'
 #GEOS_LIBRARY_PATH = 'C:/OSGeo4W64/bin/geos_c.dll'
@@ -89,7 +89,7 @@ DATABASES = {
         'USER':'postgres',
         'PORT':'5432',
         #'PASSWORD':'heimkommune',
-        'PASSWORD':'admin',
+        'PASSWORD':'password',
     }
 }
 
@@ -141,5 +141,4 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'maps-home'
 LOGIN_URL = 'login'
 
-GDAL_LIBRARY_PATH ="C:/OSGeo4W64/bin/gdal301.dll"
-GEOS_LIBRARY_PATH ='C:/OSGeo4W64/bin/geos_c.dll'
+

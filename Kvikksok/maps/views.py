@@ -9,7 +9,7 @@ from django.contrib.gis.geos import Point
 def home(request):
     data = serializers.serialize("geojson", Post.objects.all())
     mapbox_access_token = 'pk.eyJ1Ijoic2t1cDI1MDYiLCJhIjoiY2trMnJidzJkMTNyaDJvdDdrMmpuODR1biJ9.UozLDX9kk8-CC4irjB1nNQ'
-    return render(request, 'maps\home.html', 
+    return render(request, 'maps/home.html', 
                   { 'mapbox_access_token': mapbox_access_token,
                   'postnummers': Postnummer.objects.values("geom").all(),
                   'posts' : data}
