@@ -18,7 +18,7 @@ function addDataLayer(){
       map.on('click', 'kvikkleireRisk', function(e) {
          new mapboxgl.Popup()
          .setLngLat(e.lngLat)
-         .setHTML("Skredrisikoen i heltaltsformat er " + e.features[0].properties.skredRisik)
+         .setHTML("<h6> Skredinformasjon </h6>" +"Skredrisikoen har nivå:   " + "<b>" +  e.features[0].properties.skredRisik + "</b>" +"<br>" + "Skredfaren har nivå:  " + "<b>" + e.features[0].properties.skredFareg + "</b>" + "<br>" + "For mer info gå til <b> Skred</b>.")
          .addTo(map);
       });
       map.on('mouseenter', 'kvikkleireRisk', function() {
