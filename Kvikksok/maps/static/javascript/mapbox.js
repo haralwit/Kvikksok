@@ -9,10 +9,11 @@ var map = new mapboxgl.Map({
 });
 
 
+
 function addDataLayer(){
 
       map.on('click', 'kvikkleireRisk', function(e) {
-         new mapboxgl.Popup()
+         var popup = new mapboxgl.Popup()
          .setLngLat(e.lngLat)
          .setHTML("Skredrisikoen i heltaltsformat er " + e.features[0].properties.skredRisik)
          .addTo(map);
@@ -166,7 +167,7 @@ map.on('click', function(e) {
 	div.appendChild(textarea);
 	div.appendChild(submit);
 	
-    
+   popup.remove(); 
 	var marker = new mapboxgl.Marker({
 			color: '#004fa4',
 			draggable: true

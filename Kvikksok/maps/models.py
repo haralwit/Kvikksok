@@ -24,7 +24,7 @@ postnummer_mapping = {
 class Post(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
-    date_posted = models.DateTimeField(default=timezone.now+1.0)
+    date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     geom = models.PointField(srid=4326) 
 
