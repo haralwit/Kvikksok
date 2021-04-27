@@ -10,29 +10,20 @@
    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
    
-   
-    
-    <h1>Sjekk ditt område:</h1>
-    <div>
+   <style>
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+   </style>
+    <div class="map-overlay">
         <form method="get">
-            <button id="nyttPunkt" type="button">Legg til punkt</button>
-            <button id="showMarkers" type="button">Vis Varselpunkter</button>
+            <button  id="showMarkers" class="button" type="button">Vis Varselpunkter</button>
+            <button id="nyttPunkt" class="button" type="button">Legg til punkt</button>
         </form>
-        {% comment %} <form method="POST">
-            
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Join Today </legend>
-                {{ form.as_p }}
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Sign Up</button>
-            </div>
-        </form> {% endcomment %}
     </div>
 
-    <div id='map'style='width: calc(100vw - 30px); height: calc(100vh - 170px);'>
+    <div id='map'>
         <script>var geojson = '{{posts|safe}}';</script> <!-- using |escapejs to remove "&qout" -->
         <script>var kvikkleireGeojson = '{{kvikkleire|safe}}';</script>
+        <script src='static/javascript/api.js'   type="module"></script>
         <script src='static/javascript/mapbox.js'   type="module"></script>
         
    </div>

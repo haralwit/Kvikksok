@@ -11,7 +11,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{% static 'maps/main.css' %}">
-    <link rel="icon" href="{% static '/leonardo.ico' %}" />
+    <link rel="icon" href="{% static '/Takkfoross.ico' %}" />
     <!--Mapbox GL JS -->
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet' />
@@ -21,7 +21,9 @@
     <header class="site-header">
         <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
             <div class="container">
-            <a class="navbar-brand mr-4" href="/">Kvikksøk Kartet</a>
+            <a class="navbar-brand mr-4" href="/">
+                <img src={% static "maps/logo_final.svg"%} width="133" height= "100" alt="logo">
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
@@ -46,13 +48,15 @@
         </nav>
     </header>
 
-    <div class="container-fluid" >
+    <div class='container-fluid'>
         {% if messages %}
             {% for message in messages %}
                 <div class="alert alert-{{ message.tags }}"> {{ message }}</div>
             {% endfor %}
         {% endif %}
+        <div class='row'>
         {% block content %} {% endblock %}
+        </div>
     </div>
 
     
