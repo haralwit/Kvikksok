@@ -1,5 +1,9 @@
 import { ajaxRequest } from './api.js';
 
+
+
+
+
 mapboxgl.accessToken = 'pk.eyJ1IjoibGFmaXNlciIsImEiOiJja2dwcmlhaW8wc3h1Mndtb2VtOXplMWp0In0.Vi0BWSGA2uPlDSbm2tb9zQ';//access token
 var map = new mapboxgl.Map({
     container: 'map',
@@ -14,7 +18,7 @@ function addDataLayer(){
       map.on('click', 'kvikkleireRisk', function(e) {
          new mapboxgl.Popup()
          .setLngLat(e.lngLat)
-         .setHTML("Skredrisikoen i heltaltsformat er " + e.features[0].properties.skredRisik)
+         .setHTML("<h6> Skredinformasjon </h6>" +"Skredrisikoen har nivå:   " + "<b>" +  e.features[0].properties.skredRisik + "</b>" +"<br>" + "Skredfaren har nivå:  " + "<b>" + e.features[0].properties.skredFareg + "</b>" + "<br>" + "For mer info gå til <b> Skred</b>.")
          .addTo(map);
       });
       map.on('mouseenter', 'kvikkleireRisk', function() {
@@ -23,8 +27,6 @@ function addDataLayer(){
       map.on('mouseleave', 'kvikkleireRisk', function() {
         map.getCanvas().style.cursor = '';
      });
-      
-   
     
 }
 
@@ -99,74 +101,58 @@ map.addControl(nav, 'top-left');
 //allows user to add a marker
 document.getElementById("nyttPunkt").onclick = function() {addMarker()};
 function addMarker() {
-    
-    addmarker_boolen = true;
-    console.log('addmarker is ' + addmarker_boolen)
-}
-
-//Show usermarkers from database
-document.getElementById("showMarkers").onclick = function() {showMarker()};
-function showMarker() {
-    const geojsonParsed = JSON.parse(geojson);
-    geojsonParsed.features.forEach(function(marker)  {
-
-        // create a HTML element for each feature
-        //var el = document.createElement('div');
-        //el.className = 'marker';
-
-        // make a marker for each feature and add to the map
-        new mapboxgl.Marker()
-            .setLngLat(marker.geometry.coordinates)
-            .setPopup(
-                new mapboxgl.Popup({ offset: 25 }) // add popups
-                .setMaxWidth('none')
-                .setHTML(
-                '<h6>' +
-                marker.properties.title +
-                '</h6><p>' +
-                marker.properties.content +
-                '</p><p align="right" style="font-size:80%;">' +
-                marker.properties.date_posted +
-                '</p>'
-                )
-                )
-            .addTo(map);
-    });
-	console.log(geojsonParsed);
-
-	
+   if(isAuthenticated){
+      addmarker_boolen = true;
+      console.log('addmarker is ' + addmarker_boolen)
+   }else{
+      alert("Logg inn eller registerer bruker for å lage knapper.")
+   }
 }
 
 
 //MapMouseEvent and marker
 map.on('click', function(e) {
   if (addmarker_boolen == true) {
-    
-    
+	var dataSaved = false;
+   
+   //Creating popup-div content	
 	var div = window.document.createElement('div');
-    //div.innerHTML
-    //var html_data = '<form method="POST">{{% csrf_token %}}<table>{{ form.as_table }}</table><button class="btn btn-outline-info" type="submit">Sign Up</button></div></form>';
 	var msgtitle = window.document.createElement("input");
 	msgtitle.setAttribute("id", "msgtitle");
+   msgtitle.setAttribute("placeholder", "Tittel");
 	var textarea = window.document.createElement("textarea");
 	textarea.setAttribute("rows", "5");
 	textarea.setAttribute("cols", "30");
 	textarea.setAttribute("name", "textmsg");
 	textarea.setAttribute("id", "msg");
+   textarea.setAttribute("placeholder", "Beskriv obeservasjon her ...");
 	var submit = window.document.createElement("input");
 	submit.setAttribute("type", "submit");
 	submit.setAttribute("id", "submit");
 	submit.setAttribute("value", "Send melding");
+   
+
+   //Eventlistner for sending marker data
 	submit.addEventListener("click", () => {
-        var title = msgtitle.value;
-        var msg = textarea.value;
-        ajaxRequest(title, msg, e.lngLat.lat, e.lngLat.lng);
-    })
+      if(!dataSaved){
+         var title = msgtitle.value;
+         var msg = textarea.value;
+         ajaxRequest(title, msg, e.lngLat.lat, e.lngLat.lng);
+         dataSaved = true;
+         marker.togglePopup();
+         {{location.reload()}};
+         geojson = '{{posts|safe}}';
+         console.log(geojson);
+      }else{
+         console.log('already marker is added');
+      }
+      
+   })
 	div.appendChild(msgtitle);
 	div.appendChild(textarea);
 	div.appendChild(submit);
 	
-    
+   //Mapbox-marker and -popup
 	var marker = new mapboxgl.Marker({
 			color: '#004fa4',
 			draggable: true
@@ -174,13 +160,51 @@ map.on('click', function(e) {
 		.setLngLat([e.lngLat.lng, e.lngLat.lat])
 		.setPopup(
 			new mapboxgl.Popup()
-		    .setDOMContent(div))
-            //.setHTML(html_data))
+           .setDOMContent(div))    
 		.addTo(map);
-        marker.togglePopup();
-    addmarker_boolen = false;
-                 
+      marker.togglePopup();
+      addmarker_boolen = false;
+      map.panTo(e.lngLat)
   }
+   
 });
 
     
+//Show usermarkers from database
+document.getElementById("showMarkers").onclick = function() {showMarker()};
+var IsVisibile = false;
+var markers = []
+function showMarker() {
+
+   //creating markers from geojson
+   const geojsonParsed = JSON.parse(geojson);
+   geojsonParsed.features.forEach(function(marker)  {
+      // make a marker for each feature and add to the map
+      const nymarker = new mapboxgl.Marker()
+         .setLngLat(marker.geometry.coordinates)
+         .setPopup(
+            new mapboxgl.Popup({ offset: 25 }) // add popups
+            .setMaxWidth('none')
+            .setHTML(
+            '<h6>' +
+            marker.properties.title +
+            '</h6><p>' +
+            marker.properties.content +
+            '</p><p align="right" style="font-size:80%;">' +
+            marker.properties.date_posted +
+            '</p>'
+            )
+            )
+         .addTo(map);
+      markers.push(nymarker)
+   });
+
+   //toggle markers
+   if(!IsVisibile) {
+      IsVisibile = true;
+   }else{
+      markers.forEach( (marker) => marker.remove());
+      IsVisibile = false;
+   }   
+   //console.log(geojsonParsed);
+}
