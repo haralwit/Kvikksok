@@ -1,6 +1,7 @@
 from django.contrib.gis.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.urls import reverse
 # Create your models here.
 
 
@@ -11,6 +12,7 @@ class Postnummer(models.Model):
 
     def __str__(self):
         return str(self.postnummer)
+    
 
 
 # Auto-generated `LayerMapping` dictionary for postnummer model
@@ -30,6 +32,9 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def get_absolute_url(self):
+        return reverse("maps-messages-detail", kwargs={"pk": self.pk})
 
 
 class Kvikkleire(models.Model):
