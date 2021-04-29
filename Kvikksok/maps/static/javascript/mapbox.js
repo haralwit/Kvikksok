@@ -12,11 +12,12 @@ var map = new mapboxgl.Map({
     zoom: 12
 });
 
+var popup;
 
 function addDataLayer(){
 
       map.on('click', 'kvikkleireRisk', function(e) {
-         new mapboxgl.Popup()
+          popup = new mapboxgl.Popup()
          .setLngLat(e.lngLat)
          .setHTML("<h6> Skredinformasjon </h6>" +"Skredrisikoen har nivå:   " + "<b>" +  e.features[0].properties.skredRisik + "</b>" +"<br>" + "Skredfaren har nivå:  " + "<b>" + e.features[0].properties.skredFareg + "</b>" + "<br>" + "For mer info gå til <b> Skred</b>.")
          .addTo(map);
@@ -151,6 +152,14 @@ map.on('click', function(e) {
 	div.appendChild(msgtitle);
 	div.appendChild(textarea);
 	div.appendChild(submit);
+
+   var postPopup = new mapboxgl.Popup().setDOMContent(div);
+   
+   postPopup.on('open',function(){
+      if(popup!=null){
+         popup.remove()
+      }
+   });
 	
    //Mapbox-marker and -popup
 	var marker = new mapboxgl.Marker({
@@ -159,8 +168,7 @@ map.on('click', function(e) {
 		})
 		.setLngLat([e.lngLat.lng, e.lngLat.lat])
 		.setPopup(
-			new mapboxgl.Popup()
-           .setDOMContent(div))    
+			postPopup)   
 		.addTo(map);
       marker.togglePopup();
       addmarker_boolen = false;
@@ -180,20 +188,28 @@ function showMarker() {
    const geojsonParsed = JSON.parse(geojson);
    geojsonParsed.features.forEach(function(marker)  {
       // make a marker for each feature and add to the map
+      var markerPopup = new mapboxgl.Popup({ offset: 25 }) // add popups
+      .setMaxWidth('none')
+      .setHTML(
+      '<h6>' +
+      marker.properties.title +
+      '</h6><p>' +
+      marker.properties.content +
+      '</p><p align="right" style="font-size:80%;">' +
+      marker.properties.date_posted +
+      '</p>'
+      )
+
+      markerPopup.on('open',function(){
+         if(popup!=null){
+            popup.remove()
+         }
+      });
+
       const nymarker = new mapboxgl.Marker()
          .setLngLat(marker.geometry.coordinates)
          .setPopup(
-            new mapboxgl.Popup({ offset: 25 }) // add popups
-            .setMaxWidth('none')
-            .setHTML(
-            '<h6>' +
-            marker.properties.title +
-            '</h6><p>' +
-            marker.properties.content +
-            '</p><p align="right" style="font-size:80%;">' +
-            marker.properties.date_posted +
-            '</p>'
-            )
+            markerPopup
             )
          .addTo(map);
       markers.push(nymarker)
