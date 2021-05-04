@@ -1,5 +1,4 @@
 {% extends  "maps/base.html" %}
-{% load crispy_forms_tags %}
 
 {% block content %}
     <div class="container">
@@ -8,18 +7,14 @@
             {% csrf_token %}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">
-                Opprett Bruker </legend>
-                {{ form|crispy }}
+                Slett Varsel </legend>
+                <h3> Er du sikker på at du vil slette "{{ object.title }}"</h3>
             </fieldset>
             <div class="form-group">
-            <button class="btn btn-outline-info" type="submit">Opprett</button>
+                <button class="btn btn-outline-danger" type="submit">Slett</button>
+                <a class="btn btn-outline-info" href="{% url "maps-messages-detail" object.id %}">Avbryt</a>
             </div>
         </form>
-        <div class="border-top pt-3">
-            <small class="text-muted">
-                Har du en bruker? <a class="ml-2" href="{% url 'login' %}"> Logg Inn</a>
-            </small>
-        </div>
     </div>
     </div>
 {% endblock content %}
