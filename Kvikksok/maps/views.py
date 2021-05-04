@@ -37,8 +37,6 @@ def messages(request):
         'posts' : Post.objects.all(),
     }
     return render(request, 'maps/messages.html', context)
-<<<<<<< HEAD
-=======
 
 class PostListView(ListView):
     model = Post
@@ -80,4 +78,3 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin,DeleteView):
         if self.request.user == post.author:
             return True
         return False
->>>>>>> dev
